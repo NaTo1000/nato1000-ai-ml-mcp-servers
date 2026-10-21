@@ -4,3 +4,4 @@ pydantic
 pandas
 huggingface_hub
 requests
+statistics
