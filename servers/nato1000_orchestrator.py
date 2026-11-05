@@ -1,47 +1,41 @@
-"""
-NATO1000 Orchestrator MCP Server Stub
-Routes tasks to specialist models: SENTINEL, ALCHEMY, etc.
-"""
 from fastmcp import FastMCP
-from typing import Dict
+from typing import Dict, Any
 
 mcp = FastMCP(name="NATO1000 Orchestrator")
 
 SPECIALISTS = {
     "SENTINEL": "Systems engineering and diagnostics",
     "ALCHEMY": "Creative synthesis and ideation",
-    "STRAT": "Geopolitical strategy and resource analysis",
+    "STRAT": "Geopolitical and strategic analysis",
     "DELIBERATOR": "Multi-perspective comparison",
     "TRUTHMATRIX": "Provenance and evidence organization"
 }
 
 @mcp.tool()
-def route_task(task_description: str, preferred_specialist: str = None) -> Dict:
-    """Route a task to the appropriate NATO1000 specialist."""
-    if preferred_specialist and preferred_specialist in SPECIALISTS:
-        specialist = preferred_specialist
-    else:
-        # Simple keyword routing stub
-        desc_lower = task_description.lower()
-        if any(w in desc_lower for w in ["system", "debug", "diagnose", "health"]):
+def list_specialists() -> Dict[str, str]:
+    """List available NATO1000 specialist adapters."""
+    return SPECIALISTS
+
+@mcp.tool()
+def route_task(task: str, specialist: str = "auto") -> Dict[str, Any]:
+    """Route a task to a specialist."""
+    if specialist == "auto":
+        task_lower = task.lower()
+        if any(k in task_lower for k in ["system", "debug", "diagnose"]):
             specialist = "SENTINEL"
-        elif any(w in desc_lower for w in ["creative", "idea", "synthesize"]):
+        elif any(k in task_lower for k in ["create", "idea", "design"]):
             specialist = "ALCHEMY"
-        elif any(w in desc_lower for w in ["strategy", "geopolit", "war", "resource"]):
+        elif any(k in task_lower for k in ["strategy", "geo", "war", "resource"]):
             specialist = "STRAT"
         else:
             specialist = "DELIBERATOR"
+    desc = SPECIALISTS.get(specialist, "Unknown")
     return {
         "routed_to": specialist,
-        "specialty": SPECIALISTS[specialist],
-        "task": task_description,
-        "note": "Stub router — connect to real adapters in NATO1000 runtime"
+        "description": desc,
+        "task": task,
+        "note": "In production, this would call the actual model adapter via NATO1000 runtime."
     }
-
-@mcp.tool()
-def list_specialists() -> Dict:
-    """List available NATO1000 specialist models."""
-    return SPECIALISTS
 
 if __name__ == "__main__":
     mcp.run()
