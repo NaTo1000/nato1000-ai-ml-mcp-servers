@@ -1,6 +1,6 @@
 # NATO1000 AI/ML MCP Servers Suite
 
-Full collection of Model Context Protocol (MCP) servers and curated tool sets for AI/ML workflows and **all types of builds**.
+**Full collection of Model Context Protocol (MCP) servers and curated tool sets for AI/ML workflows and all types of builds.**
 
 **Owner:** [NaTo1000](https://huggingface.co/NaTo1000) / [GitHub](https://github.com/NaTo1000)
 
@@ -11,7 +11,7 @@ Full collection of Model Context Protocol (MCP) servers and curated tool sets fo
 This repository provides:
 - Ready-to-run MCP server implementations using FastMCP (Python)
 - Curated, categorized lists of tool sets covering every major AI/ML build type
-- Guidance for deploying as Hugging Face Spaces (native Gradio MCP or custom HTTP)
+- Guidance for deploying as Hugging Face Spaces (native Gradio MCP with `demo.launch(mcp_server=True)`)
 - Integration points for the NATO1000 agentic runtime and specialist models (SENTINEL, ALCHEMY, STRAT, DELIBERATOR, TRUTHMATRIX, etc.)
 - Audit, provenance, and governance tools aligned with NATO1000 principles
 
@@ -123,7 +123,7 @@ This repository provides:
 ## Existing Server Implementations
 
 See the `servers/` directory:
-- `core_ml_tools.py` — Metrics, model cards, frameworks
+- `core_ml_tools.py` — Metrics (classification/regression), model cards, frameworks, hyperparam suggestions
 - `basic_ml_tools.py` — Simple metrics and cards
 - `data_pipeline.py` — CSV preview, cleaning, features
 - `evaluation_tools.py` — Extended evaluation
@@ -135,19 +135,21 @@ See the `servers/` directory:
 - `rag_tools.py` — RAG helpers
 - `audit_tools.py` — Audit and provenance
 
-## Deploying to Hugging Face
+## Deploying to Hugging Face Spaces
 
-1. Create a Space at https://huggingface.co/new-space under the **NaTo1000** account.
-2. Link to this GitHub repository or upload the `spaces/nato1000-full-ml-tools` (or `nato1000-ml-tools`) folder.
-3. For Gradio-based MCP: Use Gradio 5.28+ with `demo.launch(mcp_server=True)`.
-4. Alternatively, deploy FastMCP servers as Docker Spaces or via Inference Endpoints.
-5. Connect clients (Claude Desktop, Cursor, VS Code, etc.) to the Space MCP endpoint or local stdio servers.
+1. Go to https://huggingface.co/new-space under the **NaTo1000** account.
+2. Name it e.g. `nato1000-full-ml-tools`.
+3. Choose Gradio SDK.
+4. Either:
+   - Link this GitHub repository and set the Space root to `spaces/nato1000-full-ml-tools`, **or**
+   - Upload / push the contents of `spaces/nato1000-full-ml-tools/` (app.py + requirements.txt).
+5. The Space will automatically get the MCP badge because `demo.launch(mcp_server=True)` is used.
+6. Connect any MCP client to the Space's MCP endpoint (visible in the Space UI).
 
-## Quick Start (Local)
-
+**Local FastMCP servers** (stdio or HTTP):
 ```bash
 pip install -r requirements.txt
-python servers/core_ml_tools.py   # runs over stdio
+python servers/core_ml_tools.py
 # or
 fastmcp run servers/core_ml_tools.py:mcp --transport http
 ```
@@ -159,4 +161,5 @@ These tools are designed to be called by the NATO1000 runtime (SENTINEL, ALCHEMY
 ---
 
 **License:** Apache 2.0  
-**Maintainer:** NaTo1000
+**Maintainer:** NaTo1000  
+**Updated:** 2026-11-25
